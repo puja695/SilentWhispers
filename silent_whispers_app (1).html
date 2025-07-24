@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Silent Whispers</title>
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(145deg, #f6f1e7 0%, #eecfc1 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 600px;
+      width: 100%;
+    }
+
+    .card {
+      background: #fff9f5;
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+      border: 1px solid #f5d1c4;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .header h1 {
+      font-family: 'Playfair Display', serif;
+      color: #b02a2a;
+      font-size: 2.8em;
+      margin-bottom: 10px;
+    }
+
+    .header p {
+      color: #5e5e5e;
+      font-size: 1.1em;
+      line-height: 1.6;
+    }
+
+    .form-group {
+      margin-bottom: 25px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      color: #8b3a3a;
+      font-weight: 600;
+      font-size: 1.05em;
+    }
+
+    .form-group input[type="text"],
+    .form-group input[type="email"],
+    .form-group input[type="password"],
+    .form-group textarea {
+      width: 100%;
+      padding: 15px;
+      border: 2px solid #f3cfc2;
+      border-radius: 12px;
+      font-size: 16px;
+      background: #fff5f0;
+      transition: all 0.3s ease;
+    }
+
+    .form-group input[type="text"]:focus,
+    .form-group input[type="email"]:focus,
+    .form-group input[type="password"]:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: #d14d4d;
+      box-shadow: 0 0 0 3px rgba(209, 77, 77, 0.1);
+      transform: translateY(-2px);
+    }
+
+    .form-group textarea {
+      min-height: 150px;
+      resize: vertical;
+      font-family: inherit;
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 18px;
+      background: #b02a2a;
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 18px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 10px 20px rgba(176, 42, 42, 0.3);
+    }
+
+    .submit-btn:hover {
+      background: #a02b2b;
+      transform: translateY(-3px);
+      box-shadow: 0 15px 30px rgba(176, 42, 42, 0.4);
+    }
+
+    .admin-link {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .admin-link a {
+      color: #a04343;
+      text-decoration: none;
+      font-size: 14px;
+      opacity: 0.7;
+      transition: opacity 0.3s ease;
+      cursor: pointer;
+    }
+
+    .admin-link a:hover {
+      opacity: 1;
+    }
+
+    .success-message, .error-message {
+      padding: 15px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      text-align: center;
+      display: none;
+      animation: slideIn 0.5s ease;
+    }
+
+    .success-message {
+      background: #38a169;
+      color: white;
+    }
+
+    .error-message {
+      background: #e53e3e;
+      color: white;
+    }
+
+    .message-item {
+      background: #fff;
+      border: 1px solid #f3cfc2;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 15px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    }
+
+    .message-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      font-size: 14px;
+      color: #8b3a3a;
+    }
+
+    .message-content {
+      color: #333;
+      line-height: 1.6;
+      font-size: 16px;
+    }
+
+    .no-messages {
+      text-align: center;
+      color: #8b3a3a;
+      font-style: italic;
+      padding: 40px;
+    }
+
+    .storage-info {
+      background: #fff3cd;
+      border: 1px solid #ffeaa7;
+      border-radius: 8px;
+      padding: 10px;
+      margin-bottom: 20px;
+      font-size: 14px;
+      color: #856404;
+      text-align: center;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .hidden {
+      display: none !important;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Main Message Form -->
+  <div class="container" id="mainForm">
+    <div class="card">
+      <div class="header">
+        <h1><b>Silent Whispers</b></h1>
+        <p>Share your thoughts and secrets anonymously.</p>
+      </div>
+
+      <div class="storage-info">
+        📋 <strong>Note:</strong> To save messages permanently, download this HTML file and open it locally in your browser. Messages will then persist across sessions.
+      </div>
+
+      <div class="success-message" id="successMessage">
+        Your message has been sent successfully! Thank you for sharing.
+      </div>
+
+      <div class="error-message" id="errorMessage">
+        Please fill in your message before sending.
+      </div>
+
+      <form id="messageForm">
+        <div class="form-group">
+          <label for="name">Name (Optional)</label>
+          <input type="text" id="name" name="name" placeholder="Leave blank to stay anonymous">
+        </div>
+
+        <div class="form-group">
+          <label for="message">Your Message *</label>
+          <textarea id="message" name="message" placeholder="Share your thoughts..." required></textarea>
+        </div>
+
+        <button type="submit" class="submit-btn">Send Whisper</button>
+      </form>
+
+      <div class="admin-link">
+        <a onclick="showAdminLogin()">Admin Access</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Admin Login Section -->
+  <div class="container hidden" id="adminLogin">
+    <div class="card">
+      <div class="header">
+        <h1>Admin Login</h1>
+        <p>Enter the admin password to view messages.</p>
+      </div>
+
+      <div class="error-message" id="loginErrorMessage">
+        Invalid password. Please try again.
+      </div>
+      
+      <form id="adminLoginForm">
+        <div class="form-group">
+          <label for="adminPassword">Admin Password</label>
+          <input type="password" id="adminPassword" required placeholder="Enter admin password" />
+        </div>
+        <button type="submit" class="submit-btn">Login</button>
+      </form>
+      
+      <div class="admin-link">
+        <a onclick="goBack()">← Back to Message Form</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Admin Panel -->
+  <div class="container hidden" id="adminPanel">
+    <div class="card">
+      <div class="header">
+        <h1>Admin Panel</h1>
+        <p>View all submitted messages</p>
+      </div>
+
+      <div class="admin-link" style="margin-bottom: 20px;">
+        <a onclick="logout()">Logout</a>
+      </div>
+
+      <div id="messagesContainer">
+        <div class="no-messages">No messages yet.</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Storage key for localStorage
+    const STORAGE_KEY = 'silent_whispers_messages';
+    
+    // Simple admin credentials (encoded for basic obfuscation)
+    const adminCredentials = {
+      password: btoa('admin123') // Base64 encoded
+    };
+
+    // Load messages from localStorage or initialize empty array
+    let messages = loadMessages();
+
+    function saveMessages() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(messages));
+      } catch (e) {
+        console.log('localStorage not available - messages will not persist');
+      }
+    }
+
+    function loadMessages() {
+      try {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        return saved ? JSON.parse(saved) : [];
+      } catch (e) {
+        return [];
+      }
+    }
+
+    // Show/hide functions
+    function showAdminLogin() {
+      document.getElementById('mainForm').classList.add('hidden');
+      document.getElementById('adminLogin').classList.remove('hidden');
+      document.getElementById('adminPanel').classList.add('hidden');
+    }
+
+    function goBack() {
+      document.getElementById('mainForm').classList.remove('hidden');
+      document.getElementById('adminLogin').classList.add('hidden');
+      document.getElementById('adminPanel').classList.add('hidden');
+    }
+
+    function showAdminPanel() {
+      document.getElementById('mainForm').classList.add('hidden');
+      document.getElementById('adminLogin').classList.add('hidden');
+      document.getElementById('adminPanel').classList.remove('hidden');
+      displayMessages();
+    }
+
+    function logout() {
+      goBack();
+    }
+
+    // Hide all messages
+    function hideAllMessages() {
+      document.querySelectorAll('.success-message, .error-message').forEach(msg => {
+        msg.style.display = 'none';
+      });
+    }
+
+    // Show message with auto-hide
+    function showMessage(elementId, duration = 3000) {
+      hideAllMessages();
+      const element = document.getElementById(elementId);
+      element.style.display = 'block';
+      setTimeout(() => {
+        element.style.display = 'none';
+      }, duration);
+    }
+
+    // Handle message form submission
+    document.getElementById('messageForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const name = document.getElementById('name').value.trim() || 'Anonymous';
+      const messageText = document.getElementById('message').value.trim();
+      
+      if (!messageText) {
+        showMessage('errorMessage');
+        return;
+      }
+
+      // Add message to storage
+      const message = {
+        id: Date.now(),
+        name: name,
+        message: messageText,
+        timestamp: new Date().toLocaleString()
+      };
+      
+      messages.push(message);
+      saveMessages(); // Save to localStorage
+      
+      // Clear form
+      document.getElementById('messageForm').reset();
+      
+      // Show success message
+      showMessage('successMessage');
+    });
+
+    // Handle admin login
+    document.getElementById('adminLoginForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const password = document.getElementById('adminPassword').value;
+      
+      if (btoa(password) === adminCredentials.password) {
+        showAdminPanel();
+        document.getElementById('adminPassword').value = ''; // Clear password field
+      } else {
+        showMessage('loginErrorMessage');
+      }
+    });
+
+    // Display messages in admin panel
+    function displayMessages() {
+      const container = document.getElementById('messagesContainer');
+      
+      if (messages.length === 0) {
+        container.innerHTML = '<div class="no-messages">No messages yet. Submit some messages first!</div>';
+        return;
+      }
+      
+      let html = '';
+      // Create a copy and reverse it to show newest first
+      const sortedMessages = [...messages].reverse();
+      
+      sortedMessages.forEach(msg => {
+        html += `
+          <div class="message-item">
+            <div class="message-header">
+              <strong>${escapeHtml(msg.name)}</strong>
+              <span>${escapeHtml(msg.timestamp)}</span>
+            </div>
+            <div class="message-content">${escapeHtml(msg.message).replace(/\n/g, '<br>')}</div>
+          </div>
+        `;
+      });
+      
+      container.innerHTML = html;
+    }
+
+    // Escape HTML to prevent XSS
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    // Initialize
+    hideAllMessages();
+  </script>
+</body>
+</html>
